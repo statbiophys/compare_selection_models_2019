@@ -11,7 +11,9 @@ Reference: in preparation.
 In order to reproduce the plots you need to unzip the file sampled_data.zip. You need to additionally download the data from https://zenodo.org/record/2619576#.XKElTrfYphE, copy the folder in the main directory and rename it as 'input'.
 
 To recreate Fig 1a, run fig1a_plot.py
+
 To recreate Fig 1b, run fig1b_plot.py
+
 To recreate Fig 1c, run fig1c_plot.py
 
 You can also reinfer the models:
