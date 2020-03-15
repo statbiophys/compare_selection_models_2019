@@ -20,6 +20,21 @@ import random as rn
 
 ## these functions come from the vampire package: preprocess_adaptive.py script
 translation_csv = 'sampled_data/adaptive-olga-translation.csv'
+def adaptive_to_olga_dict():
+    gb = pd.read_csv(translation_csv).dropna().groupby('locus')
+    return {locus: {row['adaptive']: row['olga'] for _, row in df.iterrows()} for locus, df in gb}
+
+def filter_by_gene_names(df,conversion_dict):
+    """
+    Only allow through gene names that are present for both programs.
+    """
+    allowed = {locus: set(d.keys()) for locus, d in conversion_dict.items()}
+    return df.loc[df['v_gene'].isin(allowed['TRBV']) & df['j_gene'].isin(allowed['TRBJ']), :]
+
+def olga_to_adaptive_dict():
+    gb = pd.read_csv(translation_csv).dropna().groupby('locus')
+    return {locus: {row['olga']: row['adaptive'] for _, row in df.iterrows()} for locus, df in gb}
+
 def convert_gene_names(df, conversion_dict):
     converted = df.copy()
     converted['v_gene'] = df['v_gene'].map(conversion_dict['TRBV'].get)
