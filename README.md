@@ -1,57 +1,34 @@
-## Comparison of models of TCR-beta repertoires
+## On generative models of T cell receptor sequences
 
 Written by Giulio Isacchini, MPIDS Göttingen - ENS Paris.
 
-Last updated on 13-10-2019
+Last updated on 15-03-2020
 
-Reference: in preparation.
+Reference: On generative models of T cell receptor sequences, Giulio Isacchini, Zachary Sethna, Yuval Elhanati, Armita Nourmohammad, Aleksandra M. Walczak, Thierry Mora, https://arxiv.org/abs/1911.12279
 
 === Reproduce Plots ===
 
-In order to reproduce the plots you need to unzip the file sampled_data.zip. You need to additionally download the data from https://zenodo.org/record/2619576#.XKElTrfYphE, copy the folder in the main directory and rename it as 'input'.
+In order to reproduce the plots you need to unzip the files input.zip and vampire-emerson.zip.
 
-To recreate Fig 1a, run fig1a_plot.py
-To recreate Fig 1b, run fig1b_plot.py
-To recreate Fig 1c, run fig1c_plot.py
+1) Sample data.
+To sample the data for all figures, run sample_data.py
 
-You can also reinfer the models:
+2) Infer the models.
+To infer the model for fig1, run fig1_infer.py
+To infer the model for fig2, run fig2_infer.py
 
-To infer the model for fig1a, run fig1a_infer.py
-To infer the model for fig1b and fig1c, run fig1bc_infer.py
-
-=== Train Data ===
-
-The training data is included in the sampled_data directory. However if you want to reproduce the training data too, a couple of more steps are needed:
-
-First you need to additionally download the following data:
-- https://clients.adaptivebiotech.com/pub/emerson-2017-natgen 
-- https://clients.adaptivebiotech.com/pub/deneuter-2018-cmvserostatus 
-
-Process the data files from emerson-2017-natgen using the preprocess_adaptive.py script of the vampire package and add them to a folder called emerson_processed in the main directory.
-Process the data from deneuter-2018-cmvserostatus with the train_test.sh script of the vampire package. It should create a file in the input/out_deneuter folder.
-We recommmend particular care in the definition of the same train-test split for the processing of deneuter-2018-cmvserostatus data as the one of the orginal paper.
-More precise explanation can be found in https://github.com/matsengrp/vampire-analysis-1/.
-
-To re-sample the training data, run sample_data.py
-
-=== Estimate Pvae ===
-
-Pvae for sequences sampled from the sonia model has been already estimated and included in the sampled_data folder.
-
-However, if you want to estimate it yourself you need to:
--install the vampire package
--convert the file generated_sonia.csv (output of fig1bc_infer.py script) to a format compatible with adaptive using the olga2adaptive function of the vampire package
--run the command 'tcr-vae pvae' on the new data and specify the vae model.
-
+3) Plot the results.
+To recreate Fig 1, run fig1_plot.py
+To recreate Fig 2a run fig2a_plot.py
+To recreate Fig 2b, run fig2b_evaluate.py (in the vampire environment) and then fig2b_plot.py
 
 === Requisites ===
 
 - olga
 - tensorflow
-- keras
 - numpy
 - pandas
 - scipy
 - matplotlib
 
-This directory includes a minimal version of the Sonia package. The full package will is available in https://github.com/statbiophys/SONIA/ 
+This directory includes a minimal version of the Sonia package. The full package is available in https://github.com/statbiophys/SONIA/ 
