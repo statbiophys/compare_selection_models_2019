@@ -34,9 +34,7 @@ def rewrite_gene(seq):
     return 'TRB'+seq[4]+str(int(x[0][-2:]))+'-'+str(int(x[1]))
 
 #load model
-#qm = SoniaLengthPos(load_dir='selection_models/deneuter_model_lengthpos',custom_pgen_model='deneuter_model')
 qmlr = SoniaLeftposRightpos(load_dir='selection_models/deneuter_model_leftright',custom_pgen_model='deneuter_model')
-#qmvjl = SoniaVJL(load_dir='selection_models/deneuter_model_VJL',custom_pgen_model='deneuter_model')
 
 # gen model
 main_folder='deneuter_model'
@@ -53,24 +51,17 @@ pgen_model = generation_probability.GenerationProbabilityVDJ(generative_model, g
 
 ev=EvaluateModel(sonia_model=qmlr,custom_olga_model=pgen_model)
 
-# we processed then the data to compute pvae using olga2adaptive and adaptive2olga 
-# (2 seqs out of 2e4 rejected by the olga2adaptive function)
-#sonia_seqs=pd.read_csv('sampled_data/generated_sonia_lengthpos.csv')
-#_,_,ppost_sonia=ev.evaluate_seqs(list(sonia_seqs.values))
+#evaluate sonia
 sonia_seqs=pd.read_csv('sampled_data/generated_sonia_leftright.csv')
 _,_,ppost_sonialr=ev.evaluate_seqs(list(sonia_seqs.values))
-#sonia_seqs=pd.read_csv('sampled_data/generated_sonia_VJL.csv')
-#_,_,ppost_olgaQ=ev.evaluate_seqs(list(sonia_seqs.values))
 
-#evalute ppost generated sequences from models
+
+#evalute vae
 data='input/_output_deneuter-2019-02-07/deneuter-2019-02-07.train/0.75/basic/vae-generated.csv'
 seqs=pa.adaptive2olga(pd.read_csv(data))
 _,_,ppost_basic=ev.evaluate_seqs(list(seqs.values))
-data='input/_output_deneuter-2019-02-07/deneuter-2019-02-07.train/0.75/count_match/vae-generated.csv'
-seqs=pa.adaptive2olga(pd.read_csv(data))
-_,_,ppost_countmatch=ev.evaluate_seqs(list(seqs.values))
 
-#evalute ppost data
+#evalute data
 folder='input/_output_deneuter-2019-02-07/'
 datasets=['H11_B0','H18_B0','H20_B0','H21_B0','H22_B0','H23_B0_a','H23_B0_b','H26_B0',
          'H3_B0','H41_B0','H7_B0','H8_B0_b']
@@ -92,16 +83,10 @@ plt.plot(l[:-1],k,label='data',c='k',alpha=0.3)
 for i in range(len(datasets)-1):
     k,l=np.histogram(np.nan_to_num(np.log(pposts[i+1])/np.log(10)),binning_,density=True)
     plt.plot(l[:-1],k,c='k',alpha=0.3,linewidth=2)
-#k,l=np.histogram(np.nan_to_num(np.log(ppost_sonia)/np.log(10)),binning_,density=True)
-#plt.plot(l[:-1],k,label='SONIA Lenght-Position',linewidth=3)
 k,l=np.histogram(np.nan_to_num(np.log(ppost_sonialr)/np.log(10)),binning_,density=True)
 plt.plot(l[:-1],k,label='SONIA Left+Right',linewidth=3)
 k,l=np.histogram(np.nan_to_num(np.log(ppost_basic)/np.log(10)),binning_,density=True)
 plt.plot(l[:-1],k,label='VAE basic',linewidth=3)
-#k,l=np.histogram(np.nan_to_num(np.log(ppost_countmatch)/np.log(10)),binning_,density=True)
-#plt.plot(l[:-1],k,label='count_match',linewidth=3)
-#k,l=np.histogram(np.nan_to_num(np.log(ppost_olgaQ)/np.log(10)),binning_,density=True)
-#plt.plot(l[:-1],k,label='OLGA.Q',linewidth=3)
 plt.xlabel('$\log_{10} P_{post}^{SONIA}$',fontsize=30)
 plt.ylabel('frequency',fontsize=30)
 plt.xticks(fontsize=30)
