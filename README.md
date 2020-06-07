@@ -2,6 +2,8 @@
 
 Written by Giulio Isacchini, MPIDS Göttingen - ENS Paris.
 
+The code is written in Python2.7 and not compatible with Python3.
+
 Last updated on 15-03-2020
 
 Reference: On generative models of T cell receptor sequences, Giulio Isacchini, Zachary Sethna, Yuval Elhanati, Armita Nourmohammad, Aleksandra M. Walczak, Thierry Mora, https://arxiv.org/abs/1911.12279
